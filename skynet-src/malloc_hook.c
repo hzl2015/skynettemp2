@@ -29,8 +29,8 @@ struct mem_cookie {
 	uint32_t dogtag;
 #endif
 };
-
-#define SLOT_SIZE 0x10000
+//65536
+#define SLOT_SIZE 0x10000   
 #define PREFIX_SIZE sizeof(struct mem_cookie)
 
 static struct mem_data mem_stats[SLOT_SIZE];
@@ -88,7 +88,7 @@ update_xmalloc_stat_free(uint32_t handle, size_t __n) {
 inline static void*
 fill_prefix(char* ptr) {
 	uint32_t handle = skynet_current_handle();
-	size_t size = je_malloc_usable_size(ptr);
+	size_t size = je_malloc_usable_size(ptr);//计算已分配空间大小的函数
 	struct mem_cookie *p = (struct mem_cookie *)(ptr + size - sizeof(struct mem_cookie));
 	memcpy(&p->handle, &handle, sizeof(handle));
 #ifdef MEMORY_CHECK
@@ -123,7 +123,7 @@ static void malloc_oom(size_t size) {
 	fprintf(stderr, "xmalloc: Out of memory trying to allocate %zu bytes\n",
 		size);
 	fflush(stderr);
-	abort();
+	abort();   //abort函数是一个比较严重的函数，当调用它时，会导致程序异常终止，而不会进行一些常规的清除工作，比如释放内存等。 
 }
 
 void 

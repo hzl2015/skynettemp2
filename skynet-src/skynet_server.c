@@ -41,17 +41,17 @@
 #endif
 
 struct skynet_context {
-	void * instance;
-	struct skynet_module * mod;
+	void * instance;///< 实例化
+	struct skynet_module * mod;///< 模块的指针
 	void * cb_ud;
-	skynet_cb cb;
-	struct message_queue *queue;
+	skynet_cb cb;///< 模块的返回函数
+	struct message_queue *queue;///< 消息队列
 	FILE * logfile;
 	uint64_t cpu_cost;	// in microsec
 	uint64_t cpu_start;	// in microsec
 	char result[32];
-	uint32_t handle;
-	int session_id;
+	uint32_t handle;///< 句柄
+	int session_id;///< 会话编号
 	int ref;
 	int message_count;
 	bool init;
@@ -61,6 +61,7 @@ struct skynet_context {
 	CHECKCALLING_DECL
 };
 
+/// Skynet 节点
 struct skynet_node {
 	int total;
 	int init;
@@ -705,7 +706,7 @@ skynet_send(struct skynet_context * context, uint32_t source, uint32_t destinati
 		}
 		return -1;
 	}
-	_filter_args(context, type, &session, (void **)&data, &sz);
+	_filter_args(context, type, &session, (void **)&data, &sz);// 复制消息数据，获取session  
 
 	if (source == 0) {
 		source = context->handle;
@@ -794,6 +795,7 @@ skynet_globalinit(void) {
 	G_NODE.total = 0;
 	G_NODE.monitor_exit = 0;
 	G_NODE.init = 1;
+	//创建线程私有数据。
 	if (pthread_key_create(&G_NODE.handle_key, NULL)) {
 		fprintf(stderr, "pthread_key_create failed");
 		exit(1);

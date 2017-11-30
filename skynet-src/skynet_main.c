@@ -77,7 +77,7 @@ _init_env(lua_State *L) {
 
 int sigign() {
 	struct sigaction sa;
-	sa.sa_handler = SIG_IGN;
+	sa.sa_handler = SIG_IGN;//SIG_IGN忽略/SIG_DFL默认
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGPIPE, &sa, 0);
@@ -126,8 +126,8 @@ main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	luaS_initshr();
-	skynet_globalinit();
+	luaS_initshr();    /*SSM，读写锁初始化*/
+	skynet_globalinit();/*G_NODE,创建主线程*/
 	skynet_env_init();
 
 	sigign();
@@ -137,10 +137,12 @@ main(int argc, char *argv[]) {
 	struct lua_State *L = luaL_newstate();
 	luaL_openlibs(L);	// link lua lib
 
+	//导入一段代码
 	int err =  luaL_loadbufferx(L, load_config, strlen(load_config), "=[skynet config]", "t");
 	assert(err == LUA_OK);
 	lua_pushstring(L, config_file);
 
+	//掉用函数
 	err = lua_pcall(L, 1, 1, 0);
 	if (err) {
 		fprintf(stderr,"%s\n",lua_tostring(L,-1));

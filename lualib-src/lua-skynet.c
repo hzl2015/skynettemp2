@@ -368,7 +368,7 @@ luaopen_skynet_core(lua_State *L) {
 		{ NULL, NULL },
 	};
 
-	luaL_newlibtable(L, l);
+	luaL_newlibtable(L, l);//create table
 
 	lua_getfield(L, LUA_REGISTRYINDEX, "skynet_context");
 	struct skynet_context *ctx = lua_touserdata(L,-1);

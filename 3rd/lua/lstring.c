@@ -272,7 +272,7 @@ struct shrmap_slot {
 
 struct shrmap {
 	struct shrmap_slot h[SHRSTR_SLOT];
-	int n;
+	int n; //¸ÉÊ²Ã´µÄ
 };
 
 static struct shrmap SSM;
