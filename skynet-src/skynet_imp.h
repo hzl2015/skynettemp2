@@ -13,7 +13,7 @@ struct skynet_config {
 };
 
 #define THREAD_WORKER 0
-#define THREAD_MAIN 1
+#define THREAD_MAIN 1    //-1的补码以及无符号32位输出4294967295
 #define THREAD_SOCKET 2
 #define THREAD_TIMER 3
 #define THREAD_MONITOR 4

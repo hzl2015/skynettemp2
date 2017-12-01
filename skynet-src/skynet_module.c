@@ -12,6 +12,7 @@
 
 #define MAX_MODULE_TYPE 32
 
+//32个模块
 struct modules {
 	int count;
 	struct spinlock lock;
@@ -37,6 +38,7 @@ _try_open(struct modules *m, const char * name) {
 		memset(tmp,0,sz);
 		while (*path == ';') path++;
 		if (*path == '\0') break;
+		//查找字符串_Str中首次出现字符_Val的位置,返回指针
 		l = strchr(path, ';');
 		if (l == NULL) l = path + strlen(path);
 		int len = l - path;
@@ -51,6 +53,8 @@ _try_open(struct modules *m, const char * name) {
 			fprintf(stderr,"Invalid C service path\n");
 			exit(1);
 		}
+		//RTLD_NOW： 需要在dlopen返回前，解析出所有未定义符号，如果解析不出来，在dlopen会返回NULL，
+		//RTLD_GLOBAL：动态库中定义的符号可被其后打开的其它库解析。
 		dl = dlopen(tmp, RTLD_NOW | RTLD_GLOBAL);
 		path = l;
 	}while(dl == NULL);

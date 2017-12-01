@@ -18,10 +18,12 @@ check_pid(const char *pidfile) {
 	int n = fscanf(f,"%d", &pid);
 	fclose(f);
 
+	/*获得当前进程*/
 	if (n !=1 || pid == 0 || pid == getpid()) {
 		return 0;
 	}
 
+	/*檢查进程是否在運行，ESRCH：参数 pid 所指定的进程或进程组不存在*/
 	if (kill(pid, 0) && errno == ESRCH)
 		return 0;
 
@@ -32,17 +34,20 @@ static int
 write_pid(const char *pidfile) {
 	FILE *f;
 	int pid = 0;
+	/*有O_CREAT，第3個參數才有用，生成有权限限制的文件*/
 	int fd = open(pidfile, O_RDWR|O_CREAT, 0644);
 	if (fd == -1) {
 		fprintf(stderr, "Can't create pidfile [%s].\n", pidfile);
 		return 0;
 	}
+	/*r+ 打开可读写的文件，该文件必须存在。*/
 	f = fdopen(fd, "r+");
 	if (f == NULL) {
 		fprintf(stderr, "Can't open pidfile [%s].\n", pidfile);
 		return 0;
 	}
 
+	/*Linux文件锁flock:LOCK_EX，排他锁;LOCK_NB : 在尝试锁住该文件的时候，发现已经被其他服务锁住，会返回错误，errno错误码为EWOULDBLOCK*/
 	if (flock(fd, LOCK_EX|LOCK_NB) == -1) {
 		int n = fscanf(f, "%d", &pid);
 		fclose(f);
@@ -67,6 +72,7 @@ write_pid(const char *pidfile) {
 
 static int
 redirect_fds() {
+/*后台进程的输出，输入，错误重定向*/
 	int nfd = open("/dev/null", O_RDWR);
 	if (nfd == -1) {
 		perror("Unable to open /dev/null: ");

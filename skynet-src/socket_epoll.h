@@ -17,6 +17,7 @@ sp_invalid(int efd) {
 
 static int
 sp_create() {
+//监听数目
 	return epoll_create(1024);
 }
 
@@ -30,6 +31,7 @@ sp_add(int efd, int sock, void *ud) {
 	struct epoll_event ev;
 	ev.events = EPOLLIN;
 	ev.data.ptr = ud;
+	//EPOLLIN ：表示对应的文件描述符可以读（包括对端SOCKET正常关闭）；
 	if (epoll_ctl(efd, EPOLL_CTL_ADD, sock, &ev) == -1) {
 		return 1;
 	}

@@ -257,12 +257,12 @@ skynet_start(struct skynet_config * config) {
 			exit(1);
 		}
 	}
-	skynet_harbor_init(config->harbor);
-	skynet_handle_init(config->harbor);
-	skynet_mq_init();
-	skynet_module_init(config->module_path);
-	skynet_timer_init();
-	skynet_socket_init();
+	skynet_harbor_init(config->harbor);//REMOTE,HARBOR
+	skynet_handle_init(config->harbor);//H
+	skynet_mq_init();//q
+	skynet_module_init(config->module_path);//m
+	skynet_timer_init();	//ti
+	skynet_socket_init();  //SOCKET_SERVER
 	skynet_profile_enable(config->profile);
 
 	struct skynet_context *ctx = skynet_context_new(config->logservice, config->logger);
