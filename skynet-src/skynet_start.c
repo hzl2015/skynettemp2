@@ -187,9 +187,11 @@ start(int thread) {
 	m->count = thread;
 	m->sleep = 0;
 
+	//存储指针的空间
 	m->m = skynet_malloc(thread * sizeof(struct skynet_monitor *));
 	int i;
 	for (i=0;i<thread;i++) {
+		//上面指针所对应的空间
 		m->m[i] = skynet_monitor_new();
 	}
 	if (pthread_mutex_init(&m->mutex, NULL)) {

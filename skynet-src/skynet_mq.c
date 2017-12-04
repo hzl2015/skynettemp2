@@ -78,7 +78,7 @@ struct message_queue *
 skynet_mq_create(uint32_t handle) {
 	struct message_queue *q = skynet_malloc(sizeof(*q));
 	q->handle = handle;
-	q->cap = DEFAULT_QUEUE_SIZE;
+	q->cap = DEFAULT_QUEUE_SIZE; //64
 	q->head = 0;
 	q->tail = 0;
 	SPIN_INIT(q)
