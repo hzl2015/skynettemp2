@@ -398,7 +398,9 @@ struct command_func {
 static const char *
 cmd_timeout(struct skynet_context * context, const char * param) {
 	char * session_ptr = NULL;
+	//ti:定时时间(字符串转长整形)
 	int ti = strtol(param, &session_ptr, 10);
+	//?
 	int session = skynet_context_newsession(context);
 	skynet_timeout(context->handle, ti, session);
 	sprintf(context->result, "%d", session);

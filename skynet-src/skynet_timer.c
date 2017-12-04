@@ -35,7 +35,7 @@ struct timer_event {
 
 struct timer_node {
 	struct timer_node *next;
-	uint32_t expire;
+	uint32_t expire;   //到点时间
 };
 
 struct link_list {
@@ -77,6 +77,7 @@ add_node(struct timer *T,struct timer_node *node) {
 	uint32_t current_time=T->time;
 	
 	if ((time|TIME_NEAR_MASK)==(current_time|TIME_NEAR_MASK)) {
+		//?
 		link(&T->near[time&TIME_NEAR_MASK],node);
 	} else {
 		int i;
@@ -99,8 +100,9 @@ timer_add(struct timer *T,void *arg,size_t sz,int time) {
 
 	SPIN_LOCK(T);
 
-		node->expire=time+T->time;
-		add_node(T,node);
+	//到点时间
+	node->expire=time+T->time;
+	add_node(T,node);
 
 	SPIN_UNLOCK(T);
 }
