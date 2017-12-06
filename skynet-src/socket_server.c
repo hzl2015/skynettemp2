@@ -69,23 +69,23 @@ struct write_buffer {
 #define SIZEOF_UDPBUFFER (sizeof(struct write_buffer))
 
 struct wb_list {
-	struct write_buffer * head;
-	struct write_buffer * tail;
+	struct write_buffer * head; //写缓冲区的头指针
+	struct write_buffer * tail;//写缓冲区的尾指针
 };
 
 struct socket {
-	uintptr_t opaque;
-	struct wb_list high;
-	struct wb_list low;
-	int64_t wb_size;
-	int fd;
-	int id;
-	uint8_t protocol;
-	uint8_t type;
+	uintptr_t opaque; //所属服务在skynet中对应的handle
+	struct wb_list high;//高优先级写队列
+	struct wb_list low;//低优先级写队列
+	int64_t wb_size;//写缓存大小
+	int fd;			 //对应内存分配的fd(文件描述)
+	int id;			//应用层维护一个与fd对应的id句柄
+	uint8_t protocol;	 //使用的协议类型（TCP/UDP）
+	uint8_t type;		 //scoket的类型或状态（读、写、监听等）
 	uint16_t udpconnecting;
 	int64_t warn_size;
 	union {
-		int size;
+		int size;		//读缓存预估需要的大小
 		uint8_t udp_address[UDP_ADDRESS_SIZE];
 	} p;
 	struct spinlock dw_lock;
@@ -95,19 +95,19 @@ struct socket {
 };
 
 struct socket_server {
-	int recvctrl_fd;	//接受
-	int sendctrl_fd;	//发送
-	int checkctrl;
-	poll_fd event_fd; //事件监听
-	int alloc_id;
-	int event_n;
-	int event_index;
+	int recvctrl_fd;	//接收管道的句柄
+	int sendctrl_fd;	///发送管道的句柄
+	int checkctrl;		 //释放检测命令
+	poll_fd event_fd; //事件监听//epoll或kevent的句柄
+	int alloc_id;		//应用层分配id用的
+	int event_n;		 //epoll_wait 返回的事件数
+	int event_index;	 //当前处理的事件序号
 	struct socket_object_interface soi;
-	struct event ev[MAX_EVENT];
-	struct socket slot[MAX_SOCKET];
-	char buffer[MAX_INFO];
+	struct event ev[MAX_EVENT];	 //epoll_wait 返回的事件集合
+	struct socket slot[MAX_SOCKET];//每个Socket server可以包含多个Socket，这是存储这些Socket的数组（应用层预先分配的）
+	char buffer[MAX_INFO];		//临时数据的保存，比如保存对方的地址信息等
 	uint8_t udpbuffer[MAX_UDP_PACKAGE];
-	fd_set rfds;
+	fd_set rfds;		 //用于select的fd集
 };
 
 struct request_open {

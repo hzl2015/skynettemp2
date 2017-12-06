@@ -3,22 +3,22 @@
 
 #include <stdint.h>
 
-#define SOCKET_DATA 0
-#define SOCKET_CLOSE 1
-#define SOCKET_OPEN 2
-#define SOCKET_ACCEPT 3
-#define SOCKET_ERR 4
-#define SOCKET_EXIT 5
-#define SOCKET_UDP 6
-#define SOCKET_WARNING 7
+#define SOCKET_DATA 0 //数据data到来消息
+#define SOCKET_CLOSE 1 //关闭连接消息
+#define SOCKET_OPEN 2 //连接成功消息
+#define SOCKET_ACCEPT 3  //被动连接建立消息（Accept返回了连接的fd句柄，但此连接还未被假如epoll中管理）
+#define SOCKET_ERR 4//错误消息
+#define SOCKET_EXIT 5//退出socket消息
+#define SOCKET_UDP 6//udp通信消息
+#define SOCKET_WARNING 7//警告消息
 
 struct socket_server;
 
 struct socket_message {
-	int id;
-	uintptr_t opaque;
-	int ud;	// for accept, ud is new connection id ; for data, ud is size of data 
-	char * data;
+	int id;	 //应用层的socket fd句柄
+	uintptr_t opaque; //在skynet中对应一个Ator (服务)实体的handle句柄
+	int ud;	// for accept, ud is new connection id ; for data, ud is size of data   //对于accept连接来说, ud是新连接的fd;对于数据（data）来说, ud是数据的大小 
+	char * data;   //数据指针
 };
 
 struct socket_server * socket_server_create();
