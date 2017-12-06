@@ -25,8 +25,8 @@ typedef void (*timer_execute_func)(void *ud,void *arg);
 #define TIME_NEAR (1 << TIME_NEAR_SHIFT)  //256
 #define TIME_LEVEL_SHIFT 6
 #define TIME_LEVEL (1 << TIME_LEVEL_SHIFT) //128
-#define TIME_NEAR_MASK (TIME_NEAR-1)
-#define TIME_LEVEL_MASK (TIME_LEVEL-1)
+#define TIME_NEAR_MASK (TIME_NEAR-1)//255
+#define TIME_LEVEL_MASK (TIME_LEVEL-1)//111111
 
 struct timer_event {
 	uint32_t handle;

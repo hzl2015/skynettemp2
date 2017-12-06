@@ -95,10 +95,10 @@ struct socket {
 };
 
 struct socket_server {
-	int recvctrl_fd;
-	int sendctrl_fd;
+	int recvctrl_fd;	//接受
+	int sendctrl_fd;	//发送
 	int checkctrl;
-	poll_fd event_fd;
+	poll_fd event_fd; //事件监听
 	int alloc_id;
 	int event_n;
 	int event_index;
