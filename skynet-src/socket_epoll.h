@@ -51,9 +51,16 @@ sp_write(int efd, int sock, void *ud, bool enable) {
 	epoll_ctl(efd, EPOLL_CTL_MOD, sock, &ev);
 }
 
+#if 0
+struct epoll_event {  
+__uint32_t events; /* Epoll events    */  
+epoll_data_t data; /* User data variable */  
+};  
+#endif
 static int 
 sp_wait(int efd, struct event *e, int max) {
 	struct epoll_event ev[max];
+	//ev是数组，max是一次能处理个数，-1就是要阻塞
 	int n = epoll_wait(efd , ev, max, -1);
 	int i;
 	for (i=0;i<n;i++) {
