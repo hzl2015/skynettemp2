@@ -52,7 +52,7 @@ struct skynet_context {
 	char result[32];
 	uint32_t handle;///< 句柄
 	int session_id;///< 会话编号
-	int ref;
+	int ref;         //引用计数
 	int message_count;
 	bool init;
 	bool endless;

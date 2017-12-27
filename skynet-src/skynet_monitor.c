@@ -11,8 +11,8 @@
 struct skynet_monitor {
 	int version;
 	int check_version;
-	uint32_t source;
-	uint32_t destination;
+	uint32_t source;     //来源
+	uint32_t destination;//目的
 };
 
 struct skynet_monitor * 

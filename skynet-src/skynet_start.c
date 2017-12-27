@@ -19,9 +19,9 @@
 #include <signal.h>
 
 struct monitor {
-	int count;
+	int count;     //工作线程的个数
 	struct skynet_monitor ** m;
-	pthread_cond_t cond;
+	pthread_cond_t cond;   //线程同步之条件变量
 	pthread_mutex_t mutex;
 	int sleep;
 	int quit;
